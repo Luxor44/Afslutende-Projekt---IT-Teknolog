@@ -46,7 +46,7 @@ def post_data():
     conn = mysql.connector.connect(
         host='localhost',
         user='root',
-        password='Mtpw0077',
+        password='password',
         database='database'
     )
     c = conn.cursor()
