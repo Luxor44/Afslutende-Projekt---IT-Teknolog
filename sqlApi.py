@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
-
+import os
 from flask import Flask, jsonify, request
 import mysql.connector
 
 app = Flask(__name__)
+
+SqlPassword = os.environ['MYSQLPASSWORD']
+SqlUsername = os.environ['MYSQLUSERNAME']
+
 
 # define the endpoint for database data
 @app.route('/api')
