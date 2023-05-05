@@ -1,0 +1,14 @@
+name: Afslutende-Projekt---IT-Teknolog
+on:
+  push:
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Set secret environment variable
+      env:
+        SqlPassword: ${{ secrets.MYSQLPASSWORD }}
+        Sqlusername: ${{ secrets.MYSQLUSERNAME }}
+      run: python sqlApi.py
