@@ -5,8 +5,8 @@ import mysql.connector
 
 app = Flask(__name__)
 
-SqlPassword = os.environ['MYSQLPASSWORD']
-SqlUsername = os.environ['MYSQLUSERNAME']
+SqlPassword = os.getenv('SqlPassword')
+SqlUsername = os.getenv('SqlUsername')
 
 
 # define the endpoint for database data
@@ -15,8 +15,8 @@ def get_data():
     # connect to database
     conn = mysql.connector.connect(
 	host='localhost',
-	user='Luxor',
-	password='!Mtpw0077',
+	user=SqlUsername,
+	password=SqlPassword,
 	database='Scanner'
     )
     c = conn.cursor()
@@ -49,8 +49,8 @@ def post_data():
     # connect to database
     conn = mysql.connector.connect(
         host='localhost',
-        user='Luxor',
-        password='!Mtpw0077',
+        user=SqlUsername,
+        password=SqlPassword,
         database='Scanner'
     )
     c = conn.cursor()
@@ -74,16 +74,16 @@ def post_data():
     # connect to database
     conn = mysql.connector.connect(
         host='localhost',
-        user='Luxor',
-        password='!Mtpw0077',
-        database='Scanner'
+        user=SqlUsername,
+        password=SqlPassword,
+        database='port_scanning'
     )
     c = conn.cursor()
     # Parse JSON data
     data = request.get_json()
 
     # insert data
-    query = "INSERT INTO PortScan (mac, ports, open) VALUES (%s, %s, %s)"
+    query = "INSERT INTO scanned_ports (mac, ports, open) VALUES (%s, %s, %s)"
     values = (data['mac'], data['ports'], data['open'])
     c.execute(query, values)
     conn.commit()
@@ -95,4 +95,4 @@ def post_data():
     return jsonify({'message': 'Data posed successfully'})
 
 if __name__=='__main__':
-    app.run()
+    app.run(host='192.168.8.163', port=5000)
