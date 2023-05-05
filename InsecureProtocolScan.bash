@@ -48,12 +48,30 @@ if command -v openssl &> /dev/null; then
 	echo "checks if the server support SSL/TSL"
     # Check if the server supports SSL/TLS
     if openssl s_client -connect "${ip_address}:${protocol}" -tls1_2 -cipher 'HIGH:!aNULL' 2>/dev/null | grep -q 'BEGIN CERTIFICATE'; then
-      echo "SSL/TLS supported on port $protocol"
-      echo "Checking SSL and TLS version and cipher suite..."
-      openssl s_client -connect "${ip_address}:${protocol}" -tls1_2 -cipher 'HIGH:!aNULL' 2>/dev/null | openssl x509 >output.txt
-      echo "Checking for Heartbleed vulnerability..."
-      openssl s_client -connect "${ip_address}:${protocol}" -tlsextdebug -msg 2>/dev/null | grep 'heartbeat extension' && echo "Heartbleed vulnerability found on port $protocol"
-    fi
+		echo "SSL/TLS supported on port $protocol"
+
+		echo "Checking for Heartbleed vulnerability..."
+		if openssl s_client -connect "${ip_address}:${protocol}" -tlsextdebug -msg 2>/dev/null | grep 'heartbeat extension'; then
+			echo "Heartbleed vulnerability found on port $protocol"
+			case $protocol in
+				"443") https_secure=false ;;
+				"80") http_secure=false ;;
+				"21") ftp_secure=false ;;
+				"23") telnet_secure=false ;;
+				"25") smtp_secure=false ;;
+				"110") pop3_secure=false ;;
+				"143") imap_secure=false ;;
+				"53") dns_secure=false ;;
+				"194") irc_secure=false ;;
+				"119") nntp_secure=false ;;
+				"389") ldap_secure=false ;;
+				"161") snmp_secure=false ;;
+				"22") ssh_secure=false ;;
+			esac
+		else
+		echo "&protocol has no HeartBleed vulnerability"
+		fi
+	fi
     if $(nmap -sT -p $protocol $ip_address | grep open >/dev/null); then
       echo "Vulnerability detected on port $protocol!"
       case $protocol in
@@ -91,7 +109,4 @@ echo "ldap_secure: $ldap_secure"
 echo "snmp_secure: $snmp_secure"
 echo "ssh_secure: $ssh_secure"
 
-if [ -f "./output.txt"  ]; then
-	cat "./output.txt"
-fi
 #ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'
