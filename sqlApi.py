@@ -11,9 +11,9 @@ def get_data():
     # connect to database
     conn = mysql.connector.connect(
 	host='localhost',
-	user='root',
-	password='Mtpw0077',
-	database='database'
+	user='Luxor',
+	password='!Mtpw0077',
+	database='Scanner'
     )
     c = conn.cursor()
 
@@ -40,14 +40,14 @@ def get_data():
 
 
 # define the endpoint to post JSON data to database
-@app.route('/api', methods=['POST'])
+@app.route('/api/protocolscan', methods=['POST'])
 def post_data():
     # connect to database
     conn = mysql.connector.connect(
         host='localhost',
-        user='root',
-        password='Mtpw0077',
-        database='database'
+        user='Luxor',
+        password='!Mtpw0077',
+        database='Scanner'
     )
     c = conn.cursor()
     # Parse JSON data
@@ -56,6 +56,31 @@ def post_data():
     # insert data
     query = "INSERT INTO unsecure_protocols (mac, protocol, unsecure) VALUES (%s, %s, %s)"
     values = (data['mac'], data['protocol'], data['unsecure'])
+    c.execute(query, values)
+    conn.commit()
+
+    # close database
+    c.close()
+    conn.close()
+
+    return jsonify({'message': 'Data posed successfully'})
+# define the endpoint to post JSON data to database
+@app.route('/api/portscan', methods=['POST'])
+def post_data():
+    # connect to database
+    conn = mysql.connector.connect(
+        host='localhost',
+        user='Luxor',
+        password='!Mtpw0077',
+        database='Scanner'
+    )
+    c = conn.cursor()
+    # Parse JSON data
+    data = request.get_json()
+
+    # insert data
+    query = "INSERT INTO PortScan (mac, ports, open) VALUES (%s, %s, %s)"
+    values = (data['mac'], data['ports'], data['open'])
     c.execute(query, values)
     conn.commit()
 
