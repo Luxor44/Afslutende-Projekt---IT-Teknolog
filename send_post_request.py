@@ -28,7 +28,7 @@ for port_number in range(1, 10000):
         if response.status_code == 200:
             print("Request succeeded for payload in file:", filename)
         else:
-            print("Request failed with status code", response.status_code, "for payload in file:", filename)
+            print("Request failed with status code", response.status_code, "for payload in file: ", filename)
     except FileNotFoundError:
         # Skip if the JSON file does not exist
         pass
