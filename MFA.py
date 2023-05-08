@@ -1,40 +1,41 @@
+#!/usr/bin/env python3
+
 import vonage
 import string
 import random
 import os
-from flask import Flask, jsonify, request
-import mysql.connector
+
 from functools import wraps
+import json
+import requests
 
-app = Flask(__name__)
 
-SqlPassword = os.getenv('SqlPassword')
-SqlUsername = os.getenv('SqlUsername')
-BearerToken = os.getenv('BearerToken')
-vonageKey = os.getenv('vonageKey')
-vonageSecret = os.getenv('vonageSecret')
+BearerToken = "Bearer:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+#vonageKey = os.getenv('vonageKey')
+#vonageSecret = os.getenv('vonageSecret')
 
-        #Get username and password from request
-Username = request.form['username']
-Password = request.form['password']
-url = 'http://URL.com/api/Login"
+#Get username and password from request
+Username = "Luxor"
+Password = "123"
+url = "http://192.168.8.163:5000/api/Login"
 
 #login
-headers = {
-        "Content=Type": "application/json"
-        "Authorization": BearerToken
-}
-response = request.get(url, params={"Username": Username, "Password": Password}, headers=headers)
-if respense.status_code == 201:
-        print("Request succeeded")
-        user = response.json()
-        Phone_number = user["Number"]
+headers = {"Authorization": "Bearer"+BearerToken, "Content-Type": "application/json"}
+#headers = {"Content-Type": "application/json", "Authorization": BearerToken}
+payload = {"Username": Username, "Password": Password}
+
+response = requests.post(url, headers=headers, data=json.dumps(payload))
+print(response.text)
+if response.status_code == 200:
+    print("Request succeeded")
+    user = response.json()
+    Phone_number = user["Number"]
 else:
-        print("Request failed with status code : ", response.status.code,
-  
-if user is None:
-        Print("Wrong username or password")
-else:
+    print("Request failed with status code : ", response.status.code)
+
+    if user == None:
+        print("Wrong username or password")
+    else:
         #random MFA string
         random_string = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
         #Vonage API : https://dashboard.nexmo.com/
@@ -51,12 +52,12 @@ else:
         )
 
         if responseData["messages"][0]["status"] == "0":
-        print("Message sent successfully.")
+            print("Message sent successfully.")
         else:
-        print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-        #Validate MFA CODE
-        mfa_code = input('Enter the MFA code that was sent by SMS: ')
-        if mfa_code = random_string:
-                print("MFA code validated")
-        else:
-                print("inconnect MFA code")
+            print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+            #Validate MFA CODE
+            #mfa_code = input('Enter the MFA code that was sent by SMS: ')
+            #if mfa_code = random_string:
+            #    print("MFA code validated")
+            #else:
+            #    print("inconnect MFA code")
