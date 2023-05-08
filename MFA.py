@@ -29,7 +29,7 @@ def require_token(func):
 
 #login
 
-@app.route('/api/login', methods=['POST'])
+@app.route('/api/login', methods=['GET'])
 @require_token
 def login():
 
