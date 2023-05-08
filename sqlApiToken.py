@@ -27,7 +27,7 @@ def require_token(func):
 
 
 # define the endpoint for database data
-@app.route('/api')
+@app.route('/api/protocolsca')
 @require_token
 def get_data():
     # connect to database
@@ -113,6 +113,42 @@ def post_datax():
     conn.close()
 
     return jsonify({'message': 'Data posed successfully'})
+
+# API for login
+@app.route('/api/Login')
+@require_token
+def get_data():
+    # connect to database
+    conn = mysql.connector.connect(
+	host='localhost',
+	user= SqlUsername,
+	password= SqlPassword,
+	database='Login'
+    )
+    c = conn.cursor()
+
+
+    # get data from database
+    query = "SELECT * FROM Login WHERE Username = ? AND Password = ?"
+    c.execute(query, (username, password))
+    #c.execute('SELECT id, Username, Password, Number FROM Login')
+    rows = cursor.fetchone()
+    
+    # close database
+    c.close()
+    conn.close()
+
+    # convert data to a list of dictionaries
+    if rows
+    	User = {
+            'id': row[0],
+            'Username': row[1],
+            'Password': row[2],
+            'Number': row[3]
+	}
+
+    # get data as JSON
+    return jsonify(data)
 
 if __name__=='__main__':
     app.run(host='192.168.8.163', port=5000)
