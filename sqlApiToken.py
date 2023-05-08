@@ -116,40 +116,39 @@ def post_datax():
     return jsonify({'message': 'Data posed successfully'})
 
 # API for login
-@app.route('/api/Login')
+@app.route('/api/Login', methods=['POST'])
 @require_token
 def get_data():
     # connect to database
-    conn = mysql.connector.connect(
-	host='localhost',
-	user= SqlUsername,
-	password= SqlPassword,
-	database='Login'
-    )
-    c = conn.cursor()
-
+	conn = mysql.connector.connect(
+		host='localhost',
+		user=SqlUsername,
+		password=SqlPassword,
+		database='Login'
+	)
+	c = conn.cursor()
+	
+	# username and password from json body in request
+	data = request.get_json()
+	Username = data['Username']
+	Password = data['Password']
 
     # get data from database
-    query = "SELECT * FROM Login WHERE Username = ? AND Password = ?"
-    c.execute(query, (username, password))
-    #c.execute('SELECT id, Username, Password, Number FROM Login')
-    rows = cursor.fetchone()
-    
+	query = "SELECT Number FROM Login WHERE Username = %s AND Password = %s"
+	c.execute(query, (Username, Password))
+	rows = c.fetchone()
+	print(rows)
     # close database
-    c.close()
-    conn.close()
+	c.close()
+	conn.close()
 
-    # convert data to a list of dictionaries
-    if rows
-    	User = {
-            'id': row[0],
-            'Username': row[1],
-            'Password': row[2],
-            'Number': row[3]
-	}
+	data = json.dumps(rows)
 
     # get data as JSON
-    return jsonify(data)
+	return jsonify(data)
+	#return jsonify({'message': 'Data posed successfully'})
+
 
 if __name__=='__main__':
-    app.run(host='192.168.8.163', port=5000)
+	app.run(host='192.168.8.163', port=5000)
+
