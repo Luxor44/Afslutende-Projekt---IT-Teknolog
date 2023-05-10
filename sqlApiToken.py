@@ -10,7 +10,7 @@ app = Flask(__name__)
 SqlPassword = os.getenv('SqlPassword')
 SqlUsername = os.getenv('SqlUsername')
 BearerToken = os.getenv('BearerToken')
-
+#BearerToken = "123"
 # def Authorization
 def require_token(func):
 	@wraps(func)
@@ -25,12 +25,10 @@ def require_token(func):
 			return jsonify({'message': 'Token is invalid'}), 401
 		return func(*args, **kwargs)
 	return decorated
-
-
 # define the endpoint for database data
-@app.route('/api/protocolsca')
+@app.route('/api/get/protocolscan', methods=['GET'])
 @require_token
-def get_data():
+def get_protocolscan():
     # connect to database
     conn = mysql.connector.connect(
 	host='localhost',
@@ -44,13 +42,13 @@ def get_data():
     # get data from database
 
     c.execute('SELECT id, mac, protocol, unsecure FROM unsecure_protocols')
-    rows = cursor.fetchall()
+    rows = c.fetchall()
 
 
     # convert data to a list of dictionaries
     data = []
     for row in rows:
-        data.apped({
+        data.append({
             'id': row[0],
             'mac': row[1],
             'protocol': row[2],
@@ -61,65 +59,105 @@ def get_data():
     return jsonify(data)
 
 
+# define the endpoint for database data
+@app.route('/api/get/portscan', methods=['GET'])
+@require_token
+def get_portscan():
+    # connect to database
+    conn = mysql.connector.connect(
+	host='localhost',
+	user= SqlUsername,
+	password= SqlPassword,
+	database='port_scanning'
+    )
+    c = conn.cursor()
+
+
+    # get data from database
+
+    c.execute('SELECT id, ports, open, mac FROM scanned_ports')
+    rows = c.fetchall()
+
+
+    # convert data to a list of dictionaries
+    data = []
+    for row in rows:
+        data.append({
+            'id': row[0],
+            'ports': row[1],
+            'open': row[2],
+            'mac': row[3]
+	})
+
+    # get data as JSON
+    return jsonify(data)
+
 
 # define the endpoint to post JSON data to database
 @app.route('/api/protocolscan', methods=['POST'])
 @require_token
 def post_data():
-    # connect to database
-    conn = mysql.connector.connect(
-        host='localhost',
-        user=SqlUsername,
-        password=SqlPassword,
-        database='Scanner'
-    )
-    c = conn.cursor()
+	# connect to database
+	conn = mysql.connector.connect(
+		host='localhost',
+		user=SqlUsername,
+		password=SqlPassword,
+		database='Scanner'
+	)
+	c = conn.cursor()
     # Parse JSON data
-    data = request.get_json()
+	data = request.get_json()
 
     # insert data
-    query = "INSERT INTO unsecure_protocols (mac, protocol, unsecure) VALUES (%s, %s, %s)"
-    values = (data['mac'], data['protocol'], data['unsecure'])
-    c.execute(query, values)
-    conn.commit()
+	query = "INSERT INTO unsecure_protocols (mac, protocol, unsecure) VALUES (%s, %s, %s)"
+	values = (data['mac'], data['protocol'], data['unsecure'])
+	c.execute(query, values)
+	conn.commit()
 
     # close database
-    c.close()
-    conn.close()
+	c.close()
+	conn.close()
 
-    return jsonify({'message': 'Data posed successfully'})
+	return jsonify({'message': 'Data posed successfully'})
+
 # define the endpoint to post JSON data to database
 @app.route('/api/portscan', methods=['POST'])
 @require_token
 def post_datax():
     # connect to database
-    conn = mysql.connector.connect(
-        host='localhost',
-        user=SqlUsername,
-        password=SqlPassword,
-        database='port_scanning'
-    )
-    c = conn.cursor()
+	conn = mysql.connector.connect(
+		host='localhost',
+		user=SqlUsername,
+		password=SqlPassword,
+		database='port_scanning'
+	)
+	c = conn.cursor()
     # Parse JSON data
-    data = request.get_json()
+	data = request.get_json()
 
     # insert data
-    query = "INSERT INTO scanned_ports (mac, ports, open) VALUES (%s, %s, %s)"
-    values = (data['mac'], data['ports'], data['open'])
-    c.execute(query, values)
-    conn.commit()
+	query = "INSERT INTO scanned_ports (ports, open, mac) VALUES (%s, %s, %s)"
+	values = (data['ports'], data['open'], data['mac'])
+	c.execute(query, values)
+	conn.commit()
 
     # close database
-    c.close()
-    conn.close()
+	c.close()
+	conn.close()
 
-    return jsonify({'message': 'Data posed successfully'})
+	return jsonify({'message': 'Data posed successfully'})
 
 # API for login
 @app.route('/api/Login', methods=['POST'])
 @require_token
-def get_data():
+def get_login():
     # connect to database
+
+	# username and password from request parameters
+#	data = request.get_json()
+#	Username = data['Username']
+#	Password = data['Password']
+
 	conn = mysql.connector.connect(
 		host='localhost',
 		user=SqlUsername,
@@ -127,8 +165,7 @@ def get_data():
 		database='Login'
 	)
 	c = conn.cursor()
-	
-	# username and password from json body in request
+
 	data = request.get_json()
 	Username = data['Username']
 	Password = data['Password']
@@ -136,6 +173,7 @@ def get_data():
     # get data from database
 	query = "SELECT Number FROM Login WHERE Username = %s AND Password = %s"
 	c.execute(query, (Username, Password))
+    #c.execute('SELECT id, Username, Password, Number FROM Login')
 	rows = c.fetchone()
 	print(rows)
     # close database
@@ -151,4 +189,3 @@ def get_data():
 
 if __name__=='__main__':
 	app.run(host='192.168.8.163', port=5000)
-
