@@ -56,7 +56,7 @@ if command -v openssl &> /dev/null; then
                              data='{"mac":"$strMac","protocol":"$protocol","unsecure":true}'
                              #curl -X POST -H "Content-Type: application/json" "Authorization: $BearerToken" -d $data $apiUrl
                              curl -X POST --header "Content-Type: application/json" --header "Authorization: Bearer $BearerToken" -d "$data" "$apiUrl"
-                        case $protocol in
+                             case $protocol in
                                 "443") https_secure=false ;;
                                 "80") http_secure=false ;;
                                 "21") ftp_secure=false ;;
