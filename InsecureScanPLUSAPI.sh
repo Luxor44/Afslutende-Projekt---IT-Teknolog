@@ -1,5 +1,5 @@
 #!/bin/bash -x
-apiUrl="$http://192.168.8.172:5000/api/protocolscan"
+apiUrl="http://192.168.8.172:5000/api/protocolscan"
 # Get IP address
 get_ip_address() {
   ip=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
@@ -53,8 +53,9 @@ if command -v openssl &> /dev/null; then
                 echo "Checking for Heartbleed vulnerability..."
                 if openssl s_client -connect "${ip_address}:${protocol}" -tlsextdebug -msg 2>/dev/null | grep 'heartbeat extension'; then
                         echo "Heartbleed vulnerability found on port $protocol"
-                        data='{"mac":"$strMac"","protocol":"$protocol","unsecure":true}'
-                        curl -X POST -H "Content-Type: application/json" "Authorization": "Bearer "+BearerToken -d $data $apiUrl
+                             data='{"mac":"$strMac","protocol":"$protocol","unsecure":true}'
+                             #curl -X POST -H "Content-Type: application/json" "Authorization: $BearerToken" -d $data $apiUrl
+                             curl -X POST --header "Content-Type: application/json" --header "Authorization: Bearer $BearerToken" -d "$data" "$apiUrl"
                         case $protocol in
                                 "443") https_secure=false ;;
                                 "80") http_secure=false ;;
@@ -72,14 +73,16 @@ if command -v openssl &> /dev/null; then
                         esac
                 else
                 echo "&protocol has no HeartBleed vulnerability"
-                data='{"mac":"$strMac"","protocol":"$protocol","unsecure":false}'
-                curl -X POST -H "Content-Type: application/json" "Authorization": "Bearer "+BearerToken -d $data $apiUrl
+                     data='{"mac":"$strMac","protocol":"$protocol","unsecure":false}'
+                     #curl -X POST -H "Content-Type: application/json" "Authorization: $BearerTokens" -d $data $apiUrl
+                     curl -X POST --header "Content-Type: application/json" --header "Authorization: Bearer $BearerToken" -d "$data" "$apiUrl"
                 fi
         fi
     if $(nmap -sT -p $protocol $ip_address | grep open >/dev/null); then
       echo "Vulnerability detected on port $protocol!"
-      data='{"mac":"$strMac"","protocol":"$protocol","unsecure":true}'
-      curl -X POST -H "Content-Type: application/json" "Authorization": "Bearer "+BearerToken -d $data $apiUrl
+      data='{"mac":"$strMac","protocol":"$protocol","unsecure":true}'
+      #curl -X POST -H "Content-Type: application/json" "Authorization: $BearerTokens" -d $data $apiUrl
+      curl -X POST --header "Content-Type: application/json" --header "Authorization: Bearer $BearerToken" -d "$data" "$apiUrl"
       case $protocol in
         "443") https_secure=false ;;
         "80") http_secure=false ;;
@@ -97,8 +100,9 @@ if command -v openssl &> /dev/null; then
       esac
         else
         echo "$protocol is secure"
-        data='{"mac":"$strMac"","protocol":"$protocol","unsecure":false}'
-        curl -X POST -H "Content-Type: application/json" "Authorization": "Bearer "+BearerToken -d $data $apiUrl
+        data='{"mac":"$strMac","protocol":"$protocol","unsecure":false}'
+        #curl -X POST -H "Content-Type: application/json" "Authorization: $BearerTokens" -d $data $apiUrl
+        curl -X POST --header "Content-Type: application/json" --header "Authorization: Bearer $BearerToken" -d "$data" "$apiUrl"
     fi
   done
 fi
@@ -116,3 +120,5 @@ echo "nntp_secure: $nntp_secure"
 echo "ldap_secure: $ldap_secure"
 echo "snmp_secure: $snmp_secure"
 echo "ssh_secure: $ssh_secure"
+
+#ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'
