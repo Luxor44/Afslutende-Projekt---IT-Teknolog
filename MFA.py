@@ -4,15 +4,13 @@ import vonage
 import string
 import random
 import os
-
 from functools import wraps
 import json
 import requests
 
-
-BearerToken = "Bearer:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-#vonageKey = os.getenv('vonageKey')
-#vonageSecret = os.getenv('vonageSecret')
+BearerToken = os.getenv('BearerToken')
+vonageKey = os.getenv('vonageKey')
+vonageSecret = os.getenv('vonageSecret')
 
 #Get username and password from request
 Username = "Luxor"
@@ -20,7 +18,7 @@ Password = "123"
 url = "http://192.168.8.163:5000/api/Login"
 
 #login
-headers = {"Authorization": "Bearer"+BearerToken, "Content-Type": "application/json"}
+headers = {"Authorization": "Bearer "+BearerToken, "Content-Type": "application/json"}
 #headers = {"Content-Type": "application/json", "Authorization": BearerToken}
 payload = {"Username": Username, "Password": Password}
 
@@ -29,9 +27,13 @@ print(response.text)
 if response.status_code == 200:
     print("Request succeeded")
     user = response.json()
-    Phone_number = user["Number"]
-else:
-    print("Request failed with status code : ", response.status.code)
+    #Phone_number = user["Number"]
+    print(user)
+    user_list = json.loads(user)
+    Phone_number = user_list[0]
+    print(user)
+#else:
+#    print("Request failed with status code : ", response.status.code)
 
     if user == None:
         print("Wrong username or password")
@@ -40,7 +42,7 @@ else:
         random_string = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
         #Vonage API : https://dashboard.nexmo.com/
         #change the key string and secret string to the os.getenv vonageKey and vonageSecret
-        client = vonage.Client(key="8be7c1af", secret="5KqNcnphiaLxLPPs")
+        client = vonage.Client(key= vonageKey, secret= vonageSecret)
         sms = vonage.Sms(client)
 
         responseData = sms.send_message(
@@ -61,3 +63,6 @@ else:
             #    print("MFA code validated")
             #else:
             #    print("inconnect MFA code")
+
+else:
+    print("Request failed with status code : " + response.status.code)
