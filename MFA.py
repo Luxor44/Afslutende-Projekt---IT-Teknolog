@@ -15,12 +15,12 @@ vonageSecret = os.getenv('vonageSecret')
 #Get username and password from request
 Username = "Luxor"
 Password = "123"
-url = "http://192.168.8.163:5000/api/Login"
+url = "http://192.168.8.174:5000/api/Login"
 
 #login
 headers = {"Authorization": "Bearer "+BearerToken, "Content-Type": "application/json"}
 #headers = {"Content-Type": "application/json", "Authorization": BearerToken}
-payload = {"Username": Username, "Password": Password}
+payload = {"username": Username, "password": Password}
 
 response = requests.post(url, headers=headers, data=json.dumps(payload))
 print(response.text)
