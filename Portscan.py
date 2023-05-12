@@ -3,7 +3,6 @@ import subprocess
 import json
 import requests
 import os
-import array
 BearerToken = os.getenv('BearerToken')
 
 dict_Port = {}
