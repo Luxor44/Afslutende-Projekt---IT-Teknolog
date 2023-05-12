@@ -90,5 +90,4 @@ done
 data="${data%,} }"
 data+="}"
 echo "$data"
-curl -X POST -H "Content-Type: application/json" "Authorization: $BearerTokens" -d $data $apiUrl
 curl -X POST --header "Content-Type: application/json" --header "Authorization: Bearer $BearerToken" -d "$data" "$apiUrl"
