@@ -7,16 +7,20 @@ import os
 from functools import wraps
 import json
 import requests
+import hashlib
 
 BearerToken = os.getenv('BearerToken')
 vonageKey = os.getenv('vonageKey')
 vonageSecret = os.getenv('vonageSecret')
-
+h = hashlib.sha256()
 #Get username and password from request
 Username = "Luxor"
 Password = "123"
 url = "http://192.168.8.174:5000/api/Login"
-
+Password = Password.encode('utf-8')
+Password = h.update(Password)
+Password = h.hexdigest()
+print(Password)
 #login
 headers = {"Authorization": "Bearer "+BearerToken, "Content-Type": "application/json"}
 payload = {"username": Username, "password": Password}
