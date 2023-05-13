@@ -41,6 +41,7 @@ if command -v openssl &> /dev/null; then
     if openssl s_client -connect "${ip_address}:${protocol}" -tls1_2 -cipher 'HIGH:!aNULL' 2>/dev/null | grep -q 'BEGIN CERTIFICATE'; then
                 echo "SSL/TLS supported on port $protocol"
                                 SSLTLS_Status="Certificate found"
+                                strHeartbleed="Secure"
                                 echo "Checking for Heartbleed vulnerability..."
                 if openssl s_client -connect "${ip_address}:${protocol}" -tlsextdebug -msg 2>/dev/null | grep 'heartbeat extension'; then
                         echo "Heartbleed vulnerability found on port $protocol"
@@ -63,7 +64,7 @@ fi
 data="{\"IpAdress\": \"$ip_address\",\"MacAdress\": \"$strMac\",\"SSLTSL\":{"
 for key in "${!dict_SSLTLS[@]}"; do
         value="${dict_SSLTLS[@]}"
-        if [[ value != "Certificate found" ]]; then
+        if [[ "$value" != "Certificate found" ]]; then
                 value="Certificate not found"
         fi
         data+="\"$key\":\"$value\","
@@ -72,8 +73,8 @@ data="${data%,} }"
 data+=", \"HeartBleedVulnability\": {"
 for key in "${!dict_Heartbleed[@]}"; do
         value="${dict_Heartbleed[@]}"
-        if [[ value != "vulnerable" ]]; then
-                value="Secure"
+        if [[ "$value" != "vulnerable" && "$value" != "Secure" ]]; then
+                value="No Certificate"
         fi
         data+="\"$key\":\"$value\","
 done
@@ -82,7 +83,7 @@ data+=", \"Protocols\": {"
 
 for key in "${!dict_Protocol[@]}"; do
         value="${dict_Protocol[@]}"
-        if [[ value != "open" ]]; then
+        if [[ "$value" != "open" ]]; then
                 value="closed"
         fi
         data+="\"$key\":\"$value\","
