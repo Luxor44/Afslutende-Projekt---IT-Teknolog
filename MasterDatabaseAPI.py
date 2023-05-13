@@ -138,7 +138,21 @@ def post_ports():
         execute_query(query, values)
 
         return jsonify({'message': 'Data posted successfully'})
-
+# API to Post a new user into database
+@app.route('/api/add/user', methods=['POST'])
+@require_token
+def add_user():
+    data = request.get_json()
+    username = data['username']
+    password = data['password']
+    phonenumber = data['phonenumber']
+    
+    query = "INSERT INTO login (username, password, phonenumber) VALUES (%s, %s, %s)"
+    values = (username, password, phonenumber)
+    
+    execute_query(query, values)
+    
+    return jsonify({'message': 'Data posted successfully'})
 # API for login
 @app.route('/api/Login', methods=['POST'])
 @require_token
