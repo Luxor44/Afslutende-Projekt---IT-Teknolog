@@ -8,7 +8,7 @@ CREATE TABLE login (
     password VARCHAR(50) NOT NULL,
     phonenumber VARCHAR(50) NOT NULL,
     PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE PortScan (
    id INT NOT NULL AUTO_INCREMENT,
@@ -16,7 +16,7 @@ CREATE TABLE PortScan (
    MacAdress VARCHAR(50) NOT NULL,
    Ports json NOT NULL,
    PRIMARY KEY (id)
-)
+);
  
  CREATE TABLE ProtocolScan (
   id INT NOT NULL AUTO_INCREMENT,
