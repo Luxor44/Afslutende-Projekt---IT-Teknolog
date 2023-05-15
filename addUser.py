@@ -4,7 +4,7 @@ import json
 import requests
 import os
 import hashlib
-
+h = hashlib.sha256()
 BearerToken = os.getenv('BearerToken')
 
 Username = "luxor"
