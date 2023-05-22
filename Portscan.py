@@ -43,7 +43,7 @@ def create_json_string():
          "Ports": dict_Port
         }
     print(data)
-        # crate json string
+        # Create json string
     global json_string
     json_string = json.dumps(data, indent=2)
     print(json_string)
