@@ -25,4 +25,5 @@ if data:
         Heartbleed = item['HeartBleedVulnability']
         protocols = item['Protocols']
         id = item['id']
+        Datetime = item['Datetime']
         print(f'Item {id}: IP Address={ip_address}, MAC Address={mac_address}, ssltsl={ssltsl}, Heartbleed={Heartbleed},Protocols={protocols}')
