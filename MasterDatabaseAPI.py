@@ -63,7 +63,7 @@ def require_token(func):
 @app.route('/api/get/protocolscan', methods=['GET'])
 @require_token
 def get_protocolscan():
-        query = 'SELECT id,  IpAdress, MacAdress, SSLTSL, HeartBleedVulnability, Protocols FROM ProtocolScan'
+        query = 'SELECT t1.* FROM ProtocolScan t1 LEFT JOIN ProtocolScan t2 ON t1.MacAdress = t2.MacAdress AND t1.Datetime < t2.Datetime WHERE t2.Datetime IS NULL'
 
         rows = execute_query(query, fetch="all")
     # convert data to a list of dictionaries
@@ -75,7 +75,8 @@ def get_protocolscan():
                         'MacAdress': row[2],
                         'SSLTSL': row[3],
                         'HeartBleedVulnability': row[4],
-                        'Protocols': row[5]
+                        'Protocols': row[5],
+                        'Datetime': row[6]
         })
 
     # get data as JSON
@@ -87,7 +88,7 @@ def get_protocolscan():
 @require_token
 def get_portscan():
   # get data from database
-    query = 'SELECT id, IpAdress, MacAdress, Ports FROM PortScan'
+    query = 'SELECT t1.* FROM PortScan t1 LEFT JOIN PortScan t2 ON t1.MacAdress = t2.MacAdress AND t1.Datetime < t2.Datetime WHERE t2.Datetime IS NULL'
     rows = execute_query(query, fetch="all")
 
     # convert data to a list of dictionaries
@@ -97,7 +98,8 @@ def get_portscan():
             'id': row[0],
             'IpAdress': row[1],
             'MacAdress': row[2],
-            'Ports': row[3]
+            'Ports': row[3],
+            'Datetime': row[4]
         })
 
     # get data as JSON
