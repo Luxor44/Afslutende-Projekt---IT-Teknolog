@@ -161,6 +161,7 @@ def add_user():
 def get_login():
     # Parse JSON Data
         data = request.get_json()
+        print(data)
     # make variables for data recieved
         Username = data['Username']
         Password = data['Password']
@@ -169,13 +170,14 @@ def get_login():
     # get data from database
         query = "SELECT phonenumber FROM login WHERE username = %s AND password = %s"
         rows = execute_query(query, values, fetch="one")
-    # return data
+        #if rows is none then send 400 status kode
+        if rows is None:
+            error_message = "Invalid username or password."
+            return jsonify({'error': error_message}), 400
+        #if the data was correct send phonenumber
         data = json.dumps(rows)
-
-    # get data as JSON
         return jsonify(data)
 
 
-
 if __name__=='__main__':
-        app.run(host='192.168.8.174', port=5000)
+        app.run(host='192.168.8.158', port=5000)
