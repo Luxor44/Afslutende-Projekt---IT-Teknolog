@@ -29,11 +29,8 @@ def Send_json():
 
     # Check the response status code
     if response.status_code == 200:
-               # success_count += 1
-        try:
-            print("sending : " + json_string)
-        # can i remove this line? since we are not sending files anymore
-        except FileNotFoundError:
+        print("sending : " + json_string)
+
 
 def create_json_string():
     print("Create Json string")
