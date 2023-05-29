@@ -17,7 +17,7 @@ declare -A dict_HeartBleed
 declare -A dict_Protocol
 
 # Puts the Ethernet MAC address into a variable called strMac
-strMac=$(ip link show | awk '/ether/ {print $2}')
+strMac=$(ip link show eth0 | awk '/ether/ {print $2}'| cut -d$'\n' -f1)
 echo "$strMac"
 
 # Check if OpenSSL is installed and if not then install
