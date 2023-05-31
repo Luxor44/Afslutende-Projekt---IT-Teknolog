@@ -82,7 +82,7 @@ def matPlotsTemp():
     port_counts = {}
     plotdata = {}
     result_dict = {}
-
+"""
 # Insert i dictionary
     desired_dict = None
 
@@ -104,7 +104,7 @@ def matPlotsTemp():
             print(key + ':', value)
             print("------------------------------------")
 
-
+"""
 
     for i in Portdata:
         #MacAdress.append(i['MacAdress'])
