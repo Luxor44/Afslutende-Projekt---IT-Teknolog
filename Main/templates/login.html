@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dashboard</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+
+</head>
+<body>
+	<div id="wrapper">
+		<div class="header">
+        <h1>Sign In</h1>
+    </div>
+    <!-- LogIn Formular -->
+        <div class="logindiv">
+            <form action="{{url_for('login')}}" method="post">
+                <label>Username</label>
+                <input type="text" name="username" id="username" required>
+                <label>Password</label>
+                <input type="password" name="password" id="password" required>
+                <input type="submit" value="Login">
+            </form>
+            <br>
+            {{fail_msg}}
+            
+            {% if etfa == True: %}
+            <br>
+                <form action="{{url_for('login')}}" method="post">
+                <label>A message has been sent to your phone number. Type in the numbers below and confirm:</label><br><br>
+                <input type="text" name="2fa" id="2fa">
+                <input type="submit" value="Confirm">
+            </form>
+            {% else %}
+            <!--else block html code-->
+            {% endif %}
+
+<a href="/cheat">Session Cheat</a>
+
+
+
+        </div>
+
+	</div>
+</body>
+</html>
