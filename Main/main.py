@@ -287,7 +287,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.clear()
-    msg_logout = 'You signede out!'
+    msg_logout = 'You signed out!'
     return render_template('login.html', msg_logout=msg_logout)
 
 # Session Cheat
