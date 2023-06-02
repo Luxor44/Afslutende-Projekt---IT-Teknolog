@@ -17,12 +17,12 @@ import os
 
 
 # Tomme variabler
-ip_address = ""
-mac_address = ""
-ssltsl = ""
-Heartbleed = ""
-protocols = ""
-id = ""
+#ip_address = ""
+#mac_address = ""
+#ssltsl = ""
+#Heartbleed = ""
+#protocols = ""
+#id = ""
 
 Protocoldata = []
 Portdata = []
