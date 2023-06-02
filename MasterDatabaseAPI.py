@@ -46,18 +46,18 @@ def execute_query(query, values=None, fetch="all"):
 
 # def Authorization
 def require_token(func):
-        @wraps(func)
-        def decorated(*args, **kwargs):
-                Token = None
-                if 'Authorization' in request.headers:
-                        auth_header = request.headers['Authorization']
-                        Token = auth_header.split(" ")[1]
-                if not Token:
-                        return jsonify({'message': 'Token is missing'}), 401
-                if Token != BearerToken:
-                        return jsonify({'message': 'Token is invalid'}), 401
-                return func(*args, **kwargs)
-        return decorated
+    @wraps(func)
+    def decorated(*args, **kwargs):
+        Token = None
+        if 'Authorization' in request.headers:
+            auth_header = request.headers['Authorization']
+            Token = auth_header.split(" ")[1]
+        if not Token:
+            return jsonify({'message': 'Token is missing'}), 401
+        if Token != BearerToken:
+            return jsonify({'message': 'Token is invalid'}), 401
+        return func(*args, **kwargs)
+    return decorated
 
 # define get data from protocolscan
 @app.route('/api/get/protocolscan', methods=['GET'])
