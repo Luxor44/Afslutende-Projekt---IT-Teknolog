@@ -5,7 +5,7 @@ import numpy as np
 from flask import Flask, render_template, url_for, session, request, jsonify
 from io import BytesIO
 import base64
-import mysql.connector
+#import mysql.connector
 import requests
 import hashlib
 import random
@@ -82,29 +82,6 @@ def matPlotsTemp():
     port_counts = {}
     plotdata = {}
     result_dict = {}
-"""
-# Insert i dictionary
-    desired_dict = None
-
-    for item in Protocoldata:
-        if 'SSLTSL' in item:
-            desired_dict = item
-            break
-
-    if desired_dict:
-        ssltsl_value = desired_dict['SSLTSL']
-        new_dict = {}
-
-        for pair in ssltsl_value.split(','):
-            key, value = pair.split(':')
-            new_dict[key.strip()] = value.strip()
-
-        print("-------------HERUNDER-----------------------")
-        for key, value in new_dict.items():
-            print(key + ':', value)
-            print("------------------------------------")
-
-"""
 
     for i in Portdata:
         #MacAdress.append(i['MacAdress'])
