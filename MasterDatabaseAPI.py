@@ -70,13 +70,13 @@ def get_protocolscan():
         data = []
         for row in rows:
                 data.append({
-                        'id': row[0],
-                        'IpAdress': row[1],
-                        'MacAdress': row[2],
-                        'SSLTSL': row[3],
-                        'HeartBleedVulnability': row[4],
-                        'Protocols': row[5],
-                        'Datetime': row[6]
+                    'id': row[0],
+                    'IpAdress': row[1],
+                    'MacAdress': row[2],
+                    'SSLTSL': row[3],
+                    'HeartBleedVulnability': row[4],
+                    'Protocols': row[5],
+                    'Datetime': row[6]
         })
 
     # get data as JSON
