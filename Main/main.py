@@ -152,8 +152,8 @@ def matPlotsTemp():
 
     fig = Figure()
     ax = fig.subplots()
-    ax.xaxis.label.set_color('black') #setting up X-axis label color to hotpink
-    ax.yaxis.label.set_color('black') #setting up Y-axis label color to hotpink
+#   ax.xaxis.label.set_color('black') #setting up X-axis label color to hotpink
+#   ax.yaxis.label.set_color('black') #setting up Y-axis label color to hotpink
 
     x = np.array(x)
     y = np.array(y)
