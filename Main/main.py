@@ -141,13 +141,13 @@ def matPlotsTemp():
     ax.bar(x, y, color='#20C20E', width = 0.3)
     fig.patch.set_facecolor('#222') # outer plot background color HTML white
     ax.set_facecolor("#222") #inner plot background
-    ax.tick_params(axis='x', colors='#fff') #setting up X-axis tick color to black
+    ax.tick_params(axis='x', colors='#fff') #farve på skriften
     ax.tick_params(axis='y', colors='#fff') #farve på skrift
-    ax.set_title(mac_address, color='#fff') #-#-#
+#   ax.set_title(mac_address, color='#fff') #-#-#
     for axis in ['top', 'bottom', 'left', 'right']: #bestemmer rammen er hvid 
         ax.spines[axis].set_color('#fff') 
-    plt.figure(figsize=(1,4))
-    plt.bar(x, y)
+#   plt.figure(figsize=(1,4))
+#   plt.bar(x, y)
     buf = BytesIO()
     fig.savefig(buf, format="png")
     plot1 = base64.b64encode(buf.getbuffer()).decode("ascii")
