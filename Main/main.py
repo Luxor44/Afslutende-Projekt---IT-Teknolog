@@ -81,7 +81,7 @@ def matPlotsTemp():
     #MacAdress = []
     port_counts = {}
     plotdata = {}
-    result_dict = {}
+   # result_dict = {}
 
     for i in Portdata:
         #MacAdress.append(i['MacAdress'])
