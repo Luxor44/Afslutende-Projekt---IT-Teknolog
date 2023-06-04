@@ -2,7 +2,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 import numpy as np
-from flask import Flask, render_template, url_for, session, request, jsonify
+from flask import Flask, render_template, url_for, session, request
 from io import BytesIO
 import base64
 #import mysql.connector
@@ -10,7 +10,7 @@ import requests
 import hashlib
 import random
 import json
-from functools import wraps
+# from functools import wraps
 import vonage
 import string
 import os
