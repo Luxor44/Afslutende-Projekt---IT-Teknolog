@@ -5,7 +5,7 @@ import numpy as np
 from flask import Flask, render_template, url_for, session, request
 from io import BytesIO
 import base64
-#import mysql.connector
+# import mysql.connector
 import requests
 import hashlib
 import random
