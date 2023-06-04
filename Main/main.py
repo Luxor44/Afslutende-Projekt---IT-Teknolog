@@ -78,7 +78,7 @@ def port_get_api_data():
 def matPlotsTemp():
 #    global Portdata
    # Portdata = port_get_api_data()
-    #MacAdress = []
+   # MacAdress = []
     port_counts = {}
     plotdata = {}
    # result_dict = {}
