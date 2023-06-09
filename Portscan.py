@@ -25,7 +25,7 @@ def Send_json():
     response = requests.post(url, data=json_string, headers=headers)
 
     # Check the response status code
-    if response.status_code == 200
+    if response.status_code == 200:
         print("sending : " + json_string)
 
 def create_json_string():
