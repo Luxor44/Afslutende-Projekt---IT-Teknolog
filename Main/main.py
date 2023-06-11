@@ -83,29 +83,6 @@ def matPlotsTemp():
     plotdata = {}
    # result_dict = {}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     for i in Portdata:
         #MacAdress.append(i['MacAdress'])
         #plotdata[i['MacAdress']] = count_open_ports
