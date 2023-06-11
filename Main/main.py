@@ -126,18 +126,18 @@ def matPlotsTemp():
 
     x = list(plotdata.keys())
     y = list(plotdata.values())
-
+#creates object 
     fig = Figure()
+#creates subplot withn the figure
     ax = fig.subplots()
-#   ax.xaxis.label.set_color('black') #setting up X-axis label color to hotpink
-#   ax.yaxis.label.set_color('black') #setting up Y-axis label color to hotpink
 
+#convert the list into numpy array
     x = np.array(x)
     y = np.array(y)
 
 #    ax.plot(x, y, linestyle = 'solid', c= '#20C20E', linewidth = '2', 
 #    marker = 'o', mec = '#20C20E', ms = 5, mfc = 'white')
-
+#create a bar plot from the array's
     ax.bar(x, y, color='#20C20E', width = 0.3)
     fig.patch.set_facecolor('#222') # outer plot background color HTML white
     ax.set_facecolor("#222") #inner plot background
@@ -149,7 +149,9 @@ def matPlotsTemp():
 #   plt.figure(figsize=(1,4))
 #   plt.bar(x, y)
     buf = BytesIO()
+#save as a png
     fig.savefig(buf, format="png")
+#encode base64
     plot1 = base64.b64encode(buf.getbuffer()).decode("ascii")
     return plot1
 
